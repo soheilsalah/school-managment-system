@@ -60,7 +60,7 @@ $(document).on('click', "#start-session", function(e){
 	var schedule_session_id = $(this).data("schedule-session-id")
 
 	$.ajax({
-		url : "{{ route('admin.ajax.start-session') }}",
+		url : "{{ route('instructor.ajax.start-session') }}",
 		type : "POST",
 		data : {
 			"_token" : "{{ csrf_token() }}",

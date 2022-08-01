@@ -1,12 +1,12 @@
-@extends('admin.layouts.app', [
+@extends('instructor.layouts.app', [
     'title' => $scheduleSession->belongsToSubject->name,
     'active' => 'schedule-sessions',
     'scripts' => 'pages.schedule-session.join-session',
     'breadcrumb' => [
         'title' => $scheduleSession->belongsToSubject->name,
         'map' => [
-            'لوحة التحكم' => 'admin.home',
-            'جداول الحصص' => 'admin.schedule-sessions',
+            'لوحة التحكم' => 'instructor.home',
+            'جداول الحصص' => 'instructor.schedule-sessions',
             $scheduleSession->belongsToSubject->name => 'active',
         ]
     ]

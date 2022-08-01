@@ -1,12 +1,12 @@
-@extends('admin.layouts.app', [
+@extends('instructor.layouts.app', [
     'title' => $scheduleSession->belongsToSubject->name,
     'active' => 'schedule-sessions',
     'scripts' => 'pages.schedule-session.start-session',
     'breadcrumb' => [
         'title' => $scheduleSession->belongsToSubject->name,
         'map' => [
-            'لوحة التحكم' => 'admin.home',
-            'جداول الحصص' => 'admin.schedule-sessions',
+            'لوحة التحكم' => 'instructor.home',
+            'جداول الحصص' => 'instructor.schedule-sessions',
             $scheduleSession->belongsToSubject->name => 'active',
         ]
     ]
@@ -20,7 +20,7 @@
         <div class="col-12 text-center">
             <div class="jumbotron">
                 <h3>لقد تم بدء الحصة</h3>
-                <a href="{{ route('admin.session.join', $scheduleSession->join_url) }}" class="btn btn-success font-weight-bold mt-3">اضغط هنا للانضمام</a>
+                <a href="{{ route('instructor.session.join', $scheduleSession->join_url) }}" class="btn btn-success font-weight-bold mt-3">اضغط هنا للانضمام</a>
             </div>
         </div>
     </div>

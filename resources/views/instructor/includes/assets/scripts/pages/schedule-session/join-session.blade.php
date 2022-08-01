@@ -2,6 +2,10 @@
 <script>
 $(document).ready(function(){
 
+    $(".field  ").prop('readonly', true);
+
+    alert($(".field  ").val());
+
     // Set the date we're counting down to
     var countDownDate = new Date("{{ date('M d, Y H:i:s', strtotime($scheduleSession->end_at)) }}").getTime();
 
@@ -34,14 +38,9 @@ $(document).ready(function(){
     const domain = 'meet.jit.si';
     const options = {
         roomName: "{{ $scheduleSession->meeting_id }}",
-        context: {
-            user: {
-                "avatar": "https:/gravatar.com/avatar/abc123",
-                "name": "Basel",
-                "email": "jdoe@example.com",
-                "id": "abcd:a1b2c3-d4e5f6-0abc1-23de-abcdef01fedcba"
-            },
-            "group": "a123-123-456-789"
+        userInfo: {
+            email: "{{ Auth::guard('instructor')->user()->email }}",
+            displayName: "{{ Auth::guard('instructor')->user()->name }}",
         },
         parentNode: document.querySelector('#meet'),
     };
@@ -68,7 +67,7 @@ $(document).ready(function(){
             }, false);
             return xhr;
             },
-            url : "{{ route('admin.ajax.end-session') }}",
+            url : "{{ route('instructor.ajax.end-session') }}",
             type : "POST",
             data : {
                 "_token" : "{{ csrf_token() }}",

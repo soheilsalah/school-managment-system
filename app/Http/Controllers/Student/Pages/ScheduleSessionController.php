@@ -57,10 +57,22 @@ class ScheduleSessionController extends Controller
 
         $abscenseAndAttendance = AbscenseAndAttendance::where('schedule_session_id', $scheduleSession->id)->where('student_id', Auth::guard('student')->user()->id)->first();
 
-        $abscenseAndAttendance->update([
-            'hasJoined' => 1,
-            'joined_at' => Carbon::now(),
-        ]);
+        if($abscenseAndAttendance == null){
+
+            AbscenseAndAttendance::create([
+                'schedule_session_id' => $scheduleSession->id,
+                'student_id' => Auth::guard('student')->user()->id,
+                'hasJoined' => 1,
+                'joined_at' => Carbon::now(),
+            ]);
+            
+        }else{
+
+            $abscenseAndAttendance->update([
+                'hasJoined' => 1,
+                'joined_at' => Carbon::now(),
+            ]);
+        }
 
         if($sessionWillEndAt->lt(Carbon::now())){
             
