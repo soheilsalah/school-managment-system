@@ -1,0 +1,1 @@
+<link href='{{ asset('assets/fullcalendar/lib/main.css') }}' rel='stylesheet' />

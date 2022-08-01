@@ -1,0 +1,138 @@
+<?php
+
+namespace App\Http\Controllers\Admin\Pages;
+
+use App\Http\Controllers\Controller;
+use App\Models\EducationalStages\EducationalClass;
+use App\Models\EducationalStages\EducationalStage;
+use App\Models\Exams\Exam;
+use App\Models\Subjects\Subject;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+
+class ExamController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('admin.auth:admin');
+    }
+
+    public function index()
+    {
+        return view('admin.pages.exam.index');
+    }
+
+    public function create()
+    {
+        $educationalStages = EducationalStage::get();
+        $subjects = Subject::get();
+
+        return view('admin.pages.exam.create')
+        ->with('educationalStages', $educationalStages)
+        ->with('subjects', $subjects);
+    }
+
+    public function show($slug)
+    {
+        $exam = Exam::where('slug', $slug)->first();
+
+        return view('admin.pages.exam.show')->with('exam', $exam);
+    }
+
+    public function preview($slug)
+    {
+        $exam = Exam::where('slug', $slug)->first();
+
+        $exam_json_file = public_path('uploads/exams/'.$exam->belongsToEducationalStage->slug.'/'.$exam->belongsToEducationalClass->slug.'/'.$exam->belongsToSubject->slug.'/'.$slug.'/exam.json');
+        
+        $exam_json_data = json_encode(json_decode(file_get_contents($exam_json_file), JSON_PRETTY_PRINT), true);
+
+        return view('admin.pages.exam.preview')
+        ->with('exam', $exam)
+        ->with('exam_json_data', $exam_json_data);
+    }
+
+    // datatable to view all educational stages
+    public function datatable()
+    {
+        $exam = Exam::get();
+
+        return Datatables::of($exam)
+        ->editColumn('educational_stage', function ($exam) {
+            return $exam->belongsToEducationalStage->name;
+        })
+        ->editColumn('educational_class', function ($exam) {
+            return $exam->belongsToEducationalClass->name;
+        })
+        ->editColumn('title', function ($exam) {
+            return $exam->title;
+        })
+        ->editColumn('subject', function ($exam) {
+            return $exam->belongsToSubject->name;
+        })
+        ->editColumn('isPublished', function ($exam) {
+            return $exam->isPublished;
+        })
+        ->rawColumns(['name'])
+        ->make(true);
+    }
+
+    public function displayEducationalClasses(Request $request)
+    {
+        $educational_stage_id = $request->input('educational_stage_id');
+
+        $educationalStage = EducationalStage::where('id', $educational_stage_id)->first();
+        
+        return view('admin.pages.exam.display-classes')->with('educationalStage', $educationalStage);
+    }
+
+    public function createExams(Request $request)
+    {
+        $exam_json_data = $request->input('exam_json_data');
+        $educational_stage_id = $request->input('educational_stage_id');
+        $educational_class_id = $request->input('educational_class_id');
+        $subject_id = $request->input('subject_id');
+        $slug = md5(uniqid());
+
+        $json = json_decode($exam_json_data, true);
+
+        $educationalStage = EducationalStage::where('id', $educational_stage_id)->first();
+        $educationalClass = EducationalClass::where('id', $educational_class_id)->first();
+        $subject = Subject::where('id', $subject_id)->first();
+
+        $exam_path = public_path('uploads/exams/'.$educationalStage->slug.'/'.$educationalClass->slug.'/'.$subject->slug.'/'.$slug);
+
+        if(!file_exists($exam_path)){
+
+            mkdir($exam_path, 0777, true);
+        }
+
+        $myfile = fopen(public_path('uploads/exams/'.$educationalStage->slug.'/'.$educationalClass->slug.'/'.$subject->slug.'/'.$slug.'/exam.json'), "w+") or die("Unable to open file!");
+        fwrite($myfile, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        fclose($myfile);
+
+        Exam::create([
+            'title' => $json['title'],
+            'description' => $json['description'],
+            'slug' => $slug,
+            'educational_stage_id' => $educational_stage_id,
+            'educational_class_id' => $educational_class_id,
+            'subject_id' => $subject_id,
+        ]);
+
+        $this->successMsg('تم انشاء امتحان جديد');
+
+        $this->redierctTo('admin/exam/show/'.$slug);
+    }
+
+    public function publish(Request $request)
+    {
+        Exam::where('id', $request->input('exam_id'))->update([
+            'isPublished' => 1,
+        ]);
+
+        $this->successMsg('لقد تم نشر الامتحان');
+
+        $this->reloadPage();
+    }
+}
