@@ -101,6 +101,8 @@ class HomeController extends Controller
                 <tr>
                     <th>اسم الحصة</th>
                     <th>اسم المدرس</th>
+                    <th>المرحلة التعليمية</th>
+                    <th>الفصل</th>
                     <th>مواعيد بدء الحصة</th>
                     <th>مدة الحصة</th>
                     <th>سعر الحصة</th>
@@ -112,6 +114,8 @@ class HomeController extends Controller
                 <tr>
                     <td>$scheduleSession->topic</td>
                     <td>{$scheduleSession->belongsToInstructor->name}</td>
+                    <td>{$scheduleSession->belongsToEducationalStage->name}</td>
+                    <td>{$scheduleSession->belongsToEducationalClass->name}</td>
                     <td>$start_time $start_time_attr</td>
                     <td>{$scheduleSession->duration} دقيقة</td>
                     <td>{$scheduleSession->price} EGP</td>

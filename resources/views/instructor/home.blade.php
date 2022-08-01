@@ -124,7 +124,7 @@
 
 <!-- Result Modal -->
 <div class="modal" id="resModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content text-right">
             <div class="modal-body text-center">
                 <div id="res"></div>
