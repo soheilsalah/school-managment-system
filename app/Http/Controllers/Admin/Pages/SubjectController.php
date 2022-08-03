@@ -52,13 +52,15 @@ class SubjectController extends Controller
         $subject_name = $request->input('subject_name');
         $educational_classes_id = $request->input('educational_classes_id');
 
+        count($educational_classes_id) > 0 ? $this->errorMsg('اختر صف تعليمي واحد علي الاقل') : true;
+        
         Subject::where('slug', Str::slug($subject_name))->first() != null ? $this->errorMsg('لا يمكنك تكرار اسم المادة التعليمية') : true;
 
         $subject = Subject::create([
             'name' => $subject_name,
             'slug' => Str::slug($subject_name),
         ]);
-
+            
         for($i = 0; $i < count($educational_classes_id); $i++){
 
             EducationalClassSubject::create([
