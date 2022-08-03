@@ -273,6 +273,8 @@ Route::post('ajax/exam/display-all-educational-classes', [ExamController::class,
 Route::post('/ajax/exam/create', [ExamController::class, 'createExams'])->name('ajax.exam.create');
 // ajax call to publish exam
 Route::post('/ajax/exam/publish', [ExamController::class, 'publish'])->name('ajax.exam.publish');
+// ajax call to unpublish exam
+Route::post('/ajax/exam/unpublish', [ExamController::class, 'unpublish'])->name('ajax.exam.unpublish');
 // ajax call to update exam
 Route::post('/ajax/exam/update', [ExamController::class, 'update'])->name('ajax.exam.update');
 // ajax call to delete exam

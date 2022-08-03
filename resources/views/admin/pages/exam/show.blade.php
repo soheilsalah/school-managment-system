@@ -23,6 +23,11 @@
                 <div class="float-right">
                     <a href="{{ route('admin.exam.preview', $exam->slug) }}" target="_blank" class="btn btn-success btn-sm">عرض الامتحان</a>
                     <button class="btn btn-danger btn-sm" id="delete-exam" data-exam-id="{{ $exam->id }}">مسح الامتحان</button>
+                    @if($exam->isPublished == 1)
+                    <button class="btn btn-warning btn-sm" id="unpublish-exam" data-exam-id="{{ $exam->id }}">اخفاء الامتحان</button>
+                    @else
+                    <button class="btn btn-info btn-sm" id="publish-exam" data-exam-id="{{ $exam->id }}">نشر الامتحان</button>
+                    @endif
                 </div>
             </div>
             <form id="update-exam">

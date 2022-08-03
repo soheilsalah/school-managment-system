@@ -162,6 +162,17 @@ class ExamController extends Controller
         $this->reloadPage();
     }
 
+    public function unpublish(Request $request)
+    {
+        Exam::where('id', $request->input('exam_id'))->update([
+            'isPublished' => 0,
+        ]);
+
+        $this->successMsg('لقد تم اخفاء الامتحان');
+
+        $this->reloadPage();
+    }
+
     public function update(Request $request)
     {
         $exam_id = $request->input('exam_id');
