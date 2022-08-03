@@ -123,14 +123,14 @@
                                     انشاء مدرس جديد
                                 </a>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="javascript:void(0);">
                                     <i class="icon-Commit">
                                         <span class="path1"></span><span class="path2"></span>
                                     </i>
                                     الأذونات
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
 
