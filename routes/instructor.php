@@ -128,11 +128,11 @@ Route::post('/ajax/library/book/delete', [LibraryController::class, 'delete'])->
 
 
 /* Start Profit Pages */
-Route::get('/profits/my-books', [ProfitController::class, 'books'])->name('profits.my-books');
 Route::get('/profits/my-sessions', [ProfitController::class, 'sessions'])->name('profits.my-sessions');
+Route::get('/profits/my-books', [ProfitController::class, 'books'])->name('profits.my-books');
 
 // ajax call to view all instructor books profits
 Route::get('/datatable/profits/my-books', [ProfitController::class, 'myBooksProfitDatatable'])->name('datatable.profits.my-books');
 // ajax call to view all instructor sessions profits
-Route::get('/datatable/profits/my-sessions', [ProfitController::class, 'myBooksProfitDatatable'])->name('datatable.profits.my-sessions');
+Route::get('/datatable/profits/my-sessions/{instructor_id}', [ProfitController::class, 'mySessionsProfitDatatable'])->name('datatable.profits.my-sessions');
 /* End Profit Pages */

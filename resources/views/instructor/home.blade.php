@@ -87,7 +87,7 @@
                             <p class="font-weight-600 text-info">ارباحي من الحصص</p>
                         </div>
                         <div class="box-body">
-                            <h1 class="countnm font-size-50 m-0">0</h1>
+                            <h1 class="countnm font-size-50 m-0">{{ $total_profit }}</h1>
                         </div>
                     </a>
                 </div>

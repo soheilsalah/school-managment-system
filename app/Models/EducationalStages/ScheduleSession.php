@@ -33,6 +33,7 @@ class ScheduleSession extends Model
         'isStarted',
         'isEnded',
         'created_by',
+        'ended_by',
         'slug'
     ];
 
@@ -54,5 +55,10 @@ class ScheduleSession extends Model
     public function belongsToSubject()
     {
         return $this->belongsTo(Subject::class, 'subject_id', 'id');
+    }
+
+    public function withdrawn()
+    {
+        return $this->hasOne(WithdrawnSchedulSession::class, 'schedule_session_id', 'id');
     }
 }

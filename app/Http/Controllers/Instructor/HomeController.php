@@ -34,6 +34,8 @@ class HomeController extends Controller
         $educationalStages = EducationalStage::get();
         $scheduleSessions = ScheduleSession::where('instructor_id', Auth::guard('instructor')->user()->id)->get();
 
+        $total_profit = ScheduleSession::where('instructor_id', Auth::guard('instructor')->user()->id)->where('isEnded', 1)->where('ended_by', 'instructor')->sum('price');
+
         $events = [];
         
         foreach($scheduleSessions as $scheduleSession){
@@ -77,6 +79,7 @@ class HomeController extends Controller
         ->with('countMyNotEndedSessions', $countMyNotEndedSessions)
         ->with('countMyClasses', $countMyClasses)
         ->with('countMySubjects', $countMySubjects)
+        ->with('total_profit', $total_profit)
         ->with('events', json_encode($events));
     }
 

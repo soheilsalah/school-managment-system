@@ -22,11 +22,15 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table id="educational-stages" class="table table-striped table-bordered display" style="width:100%">
+                        <table id="sessions-profits" class="table table-striped table-bordered display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>الحصة</th>
-                                    <th>سعر الحصة</th>
+                                    <th>اسم الحصة</th>
+                                    <th>المادة</th>
+                                    <th>السنة الدراسية</th>
+                                    <th>ربحي من الحصة</th>
+                                    <th>تم الانتهاء من الحصة بتاريخ</th>
+                                    <th>هل تم سحبها</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
