@@ -61,13 +61,27 @@
                     </li>
 
                     <!-- Recorded Sessions -->
-                    <li>
+                    {{-- <li>
                         <a href="javascript:void(0);">
                             <i class="icon-Layout-4-blocks">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
                             </i>
                             <span>الدروس المسجلة</span>
+                            <span class="pull-right-container">
+                            <i class="fa fa-angle-right pull-right"></i>
+                            </span>
+                        </a>
+                    </li> --}}
+
+                    <!-- Exams -->
+                    <li class="{{ isset($active) && $active == 'exams' ? 'active' : null }}">
+                        <a href="{{ route('student.exams') }}">
+                            <i class="icon-Layout-4-blocks">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                            <span>الامتحانات</span>
                             <span class="pull-right-container">
                             <i class="fa fa-angle-right pull-right"></i>
                             </span>

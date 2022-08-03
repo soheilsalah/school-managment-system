@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Student\HomeController;
 use App\Http\Controllers\Student\Pages\AttendanceController;
+use App\Http\Controllers\Student\Pages\ExamController;
 use App\Http\Controllers\Student\Pages\LabController;
 use App\Http\Controllers\Student\Pages\LibraryController;
 use App\Http\Controllers\Student\Pages\OnlineSessionController;
@@ -68,6 +69,14 @@ Route::get('/online-session/show/{slug}', [OnlineSessionController::class, 'show
 // ajax to display all schedule sessions datatables
 Route::get('/datatable/schedule-sessions/{educational_class_id}', [OnlineSessionController::class, 'datatable'])->name('datatable.schedule-sessions');
 /* End Online Session Pages *
+
+
+/* Start Exams Pages */
+Route::get('/exams', [ExamController::class, 'index'])->name('exams');
+
+// ajax call to view exams datatables
+Route::get('/datatable/exams/{educational_class_id}', [ExamController::class, 'datatable'])->name('datatable.exams');
+/* End Exams Pages */
 
 
 /* Start Labs Pages */
