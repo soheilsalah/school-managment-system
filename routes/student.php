@@ -73,9 +73,13 @@ Route::get('/datatable/schedule-sessions/{educational_class_id}', [OnlineSession
 
 /* Start Exams Pages */
 Route::get('/exams', [ExamController::class, 'index'])->name('exams');
+Route::get('/exam/{slug}/join', [ExamController::class, 'join'])->name('exam.join');
+Route::get('/exam/{slug}/show', [ExamController::class, 'show'])->name('exam.show');
 
 // ajax call to view exams datatables
 Route::get('/datatable/exams/{educational_class_id}', [ExamController::class, 'datatable'])->name('datatable.exams');
+// ajax call to submit exam answer
+Route::post('/exam/submit-answers', [ExamController::class, 'submitAnswers'])->name('exam.submit-answers');
 /* End Exams Pages */
 
 

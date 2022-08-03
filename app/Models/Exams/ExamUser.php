@@ -10,6 +10,8 @@ class ExamUser extends Model
 {
     use HasFactory;
 
+    protected $table = 'exam_students';
+
     protected $fillable = [
         'exam_id', 'student_id', 'username', 'email',
     ];

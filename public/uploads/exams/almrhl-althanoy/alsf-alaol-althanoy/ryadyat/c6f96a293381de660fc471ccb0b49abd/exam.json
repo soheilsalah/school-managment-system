@@ -9,7 +9,14 @@
                     "type": "text",
                     "name": "question1",
                     "title": "\u0627\u0630\u0627 \u0643\u0627\u0646\u062a \u0633 = 15 \u0648 \u0635 = \u061f \u0648 \u0633 + \u0635 = 25 \u0627\u0630\u0627 \u0645\u0627 \u0642\u064a\u0645\u0629 \u0635 \u061f",
-                    "valueName": "10",
+                    "defaultValueExpression": "10",
+                    "isRequired": true
+                },
+                {
+                    "type": "text",
+                    "name": "question2",
+                    "title": "20 - 15 = \u061f",
+                    "valueName": "18",
                     "isRequired": true
                 }
             ]

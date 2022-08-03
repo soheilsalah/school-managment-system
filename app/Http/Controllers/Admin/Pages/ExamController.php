@@ -214,14 +214,16 @@ class ExamController extends Controller
 
             $examQuestion->delete();
         }
-
+        
+        $score = 0;
+        
         // recreate survey questions
         for($i = 0; $i < count($json['pages']); $i++){
 
             for($j = 0; $j < count($json['pages'][$i]['elements']); $j++){
 
                 $question = $json['pages'][$i]['elements'][$j]['title'];
-                $score = $json['pages'][$i]['elements'][$j]['valueName'];
+                $score = $json['pages'][$i]['elements'][$j]['placeHolder'];
 
                 ExamQuestion::create([
                     'exam_id' => $exam_id,
