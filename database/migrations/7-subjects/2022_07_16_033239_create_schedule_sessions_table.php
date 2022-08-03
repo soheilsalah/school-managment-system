@@ -37,6 +37,8 @@ class CreateScheduleSessionsTable extends Migration
             $table->boolean('isEnded')->default(0)->nullable();
             $table->string('created_by')->default('admin');
             $table->string('ended_by')->default('admin');
+            $table->boolean('isWithdrawn')->nullable();
+            $table->date('withdrawn_at')->nullable();
             $table->string('slug');
 
             $table->foreign('educational_stage_id')

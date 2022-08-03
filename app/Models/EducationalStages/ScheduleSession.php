@@ -56,9 +56,4 @@ class ScheduleSession extends Model
     {
         return $this->belongsTo(Subject::class, 'subject_id', 'id');
     }
-
-    public function withdrawn()
-    {
-        return $this->hasOne(WithdrawnSchedulSession::class, 'schedule_session_id', 'id');
-    }
 }

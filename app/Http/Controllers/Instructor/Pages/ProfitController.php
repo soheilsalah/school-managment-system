@@ -57,14 +57,7 @@ class ProfitController extends Controller
         })
         ->editColumn('is_withdrawn', function ($scheduleSession) {
             
-            if(isset($scheduleSession->withdrawn) && $scheduleSession->withdrawn->schedule_session_id == $scheduleSession->id){
-
-                return '<span class="font-weight-bold text-success">تم سحبها</span>';
-
-            }else{
-                
-                return '<span class="font-weight-bold text-danger">لم يتم سحبها</span>';
-            }
+            return $scheduleSession->isWithdrawn == null ? '<span class="font-weight-bold text-success">تم سحبها</span>' : '<span class="font-weight-bold text-danger">لم يتم سحبها</span>';
         })
         ->rawColumns(['is_withdrawn'])
         ->make(true);
