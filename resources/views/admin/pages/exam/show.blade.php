@@ -1,7 +1,7 @@
 @extends('admin.layouts.app', [
     'title' => $exam->title,
     'active' => 'exams',
-    'scripts' => 'pages.exam.show',
+    'assets' => 'pages.exam.show',
     'breadcrumb' => [
         'title' => $exam->title,
         'map' => [
@@ -19,61 +19,35 @@
       <div class="col-12">
         <div class="box">
             <div class="box-header">
-                <h4 class="box-title float-left">{{ $exam->description }}</h4>  
-                @if ($exam->isPublished == 1)
-                <button class="btn btn-success btn-sm btn-round btn-outline float-right">
-                    تم نشر الامتحان
-                    <i class="fa fa-check"></i>
-                </button>
-                @else
-                <button class="btn btn-danger btn-sm btn-round float-right" id="publish-exam" data-exam-id="{{ $exam->id }}">اضغط هنا لنشر الامتحان</button>
-                @endif
-            </div>
-            <div class="box-body">
-                <div class="row justify-content-center">
-                    <div class="col-9">
-                        <div class="form-group row">
-                            <label for="topic" class="col-sm-3 col-form-label">اسم الامتحان</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" value="{{ $exam->title }}" id="topic" readonly>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="topic" class="col-sm-3 col-form-label">ينتمي الي مرحلة تعليمية</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" value="{{ $exam->belongsToEducationalStage->name }}" id="topic" readonly>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="topic" class="col-sm-3 col-form-label">ينتمي الي الصف التعليمي</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" value="{{ $exam->belongsToEducationalClass->name }}" id="topic" readonly>
-                            </div>
-                        </div>
-    
-                        <div class="form-group row">
-                            <label for="subject" class="col-sm-3 col-form-label">المادة</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" value="{{ $exam->belongsToSubject->name }}" id="subject" readonly>
-                            </div>
-                        </div>
-    
-                        <div class="form-group row">
-                            <label for="password" class="col-sm-3 col-form-label">عرض الامتحان كصفحة تجريبية</label>
-                            <div class="col-sm-9">
-                                <a href="{{ route('admin.exam.preview', $exam->slug) }}" class="btn btn-primary btn-sm" target="_blank">رابط الانضمام المحاضرة</a>
-                            </div>
-                        </div>
-                    </div>
+                <h4 class="box-title float-left">{{ $exam->title }}</h4> 
+                <div class="float-right">
+                    <a href="{{ route('admin.exam.preview', $exam->slug) }}" target="_blank" class="btn btn-success btn-sm">عرض الامتحان</a>
+                    <button class="btn btn-danger btn-sm" id="delete-exam" data-exam-id="{{ $exam->id }}">مسح الامتحان</button>
                 </div>
             </div>
+            <form id="update-exam">
+                {{ csrf_field() }}
+                <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+                <div class="box-body">
+                    <div id="examContainer">
+                        <div id="creatorElement" style="height: 100vh;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea name="exam_json_data" class="form-control" id="" dir="ltr" cols="30" rows="15">{{ $exam_json_data }}</textarea>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-rounded btn-info btn-outline">
+                    <i class="ti-save-alt"></i> Update
+                    </button>
+                </div> 
+            </form>
         </div>
       </div>
     </div>
 </section>
-<!--/ Create new Exam Form -->
+
 
 <!-- Loading Modal -->
 <div class="modal" id="loading" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -1,0 +1,18 @@
+{
+    "title": "Random Question",
+    "logoPosition": "right",
+    "pages": [
+        {
+            "name": "page1",
+            "elements": [
+                {
+                    "type": "text",
+                    "name": "question1",
+                    "title": "What is your name ?",
+                    "valueName": "5",
+                    "isRequired": true
+                }
+            ]
+        }
+    ]
+}

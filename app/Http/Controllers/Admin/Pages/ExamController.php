@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EducationalStages\EducationalClass;
 use App\Models\EducationalStages\EducationalStage;
 use App\Models\Exams\Exam;
+use App\Models\Exams\ExamQuestion;
 use App\Models\Subjects\Subject;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -36,7 +37,15 @@ class ExamController extends Controller
     {
         $exam = Exam::where('slug', $slug)->first();
 
-        return view('admin.pages.exam.show')->with('exam', $exam);
+        $exam == null ? $this->redierctTo('admin/exam/all-exams') : true;
+
+        $exam_json_file = public_path('uploads/exams/'.$exam->belongsToEducationalStage->slug.'/'.$exam->belongsToEducationalClass->slug.'/'.$exam->belongsToSubject->slug.'/'.$slug.'/exam.json');
+        
+        $exam_json_data = json_encode(json_decode(file_get_contents($exam_json_file), JSON_PRETTY_PRINT), true);
+
+        return view('admin.pages.exam.show')
+        ->with('exam', $exam)
+        ->with('exam_json_data', $exam_json_data);
     }
 
     public function preview($slug)
@@ -111,18 +120,35 @@ class ExamController extends Controller
         fwrite($myfile, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         fclose($myfile);
 
-        Exam::create([
-            'title' => $json['title'],
-            'description' => $json['description'],
+        $exam = Exam::create([
+            'title' => isset($json['title']) ? $json['title'] : null,
+            'description' => isset($json['description']) ? $json['description'] : null,
             'slug' => $slug,
             'educational_stage_id' => $educational_stage_id,
             'educational_class_id' => $educational_class_id,
             'subject_id' => $subject_id,
         ]);
 
+        $score = 0;
+
+        for($i = 0; $i < count($json['pages']); $i++){
+
+            for($j = 0; $j < count($json['pages'][$i]['elements']); $j++){
+
+                $question = $json['pages'][$i]['elements'][$j]['title'];
+                $score = $json['pages'][$i]['elements'][$j]['valueName'];
+                
+                ExamQuestion::create([
+                    'exam_id' => $exam->id,
+                    'question' => $question,
+                    'score' => $score,
+                ]);
+            }
+        }
+
         $this->successMsg('تم انشاء امتحان جديد');
 
-        $this->redierctTo('admin/exam/show/'.$slug);
+        $this->redierctTo('admin/exam/'.$slug.'/show');
     }
 
     public function publish(Request $request)
@@ -134,5 +160,83 @@ class ExamController extends Controller
         $this->successMsg('لقد تم نشر الامتحان');
 
         $this->reloadPage();
+    }
+
+    public function update(Request $request)
+    {
+        $exam_id = $request->input('exam_id');
+        $exam_json_data = $request->input('exam_json_data');
+
+        $json = json_decode($exam_json_data, true);
+        
+        // dd($json);
+
+        $exam = Exam::where('id', $exam_id)->first();
+
+        $exam_json_file = public_path('uploads/exams/'.$exam->belongsToEducationalStage->slug.'/'.$exam->belongsToEducationalClass->slug.'/'.$exam->belongsToSubject->slug.'/'.$exam->slug.'/exam.json');
+
+        file_exists($exam_json_file) ? $this->removeFile($exam_json_file) : true;
+
+        // recreate json file
+        $exam_path = public_path('uploads/surveys/survey-js/'.$exam->slug);
+
+        if(!file_exists($exam_path)){
+
+            mkdir($exam_path, 0777, true);
+        }
+
+        $myfile = fopen(public_path('uploads/exams/'.$exam->belongsToEducationalStage->slug.'/'.$exam->belongsToEducationalClass->slug.'/'.$exam->belongsToSubject->slug.'/'.$exam->slug.'/exam.json'), "w+") or die("Unable to open file!");
+        fwrite($myfile, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        fclose($myfile);
+
+        // update survey in database
+        $exam->update([
+            'title' => isset($json['title']) ? $json['title'] : null,
+            'description' => isset($json['description']) ? $json['description'] : null,
+        ]);
+
+        // get survey questions
+        $examQuestions = ExamQuestion::where('exam_id', $exam_id)->get();
+
+        // delete survey questions
+        foreach($examQuestions as $examQuestion){
+
+            $examQuestion->delete();
+        }
+
+        // recreate survey questions
+        for($i = 0; $i < count($json['pages']); $i++){
+
+            for($j = 0; $j < count($json['pages'][$i]['elements']); $j++){
+
+                $question = $json['pages'][$i]['elements'][$j]['title'];
+                $score = $json['pages'][$i]['elements'][$j]['valueName'];
+
+                ExamQuestion::create([
+                    'exam_id' => $exam_id,
+                    'question' => $question,
+                    'score' => $score,
+                ]);
+            }
+        }
+
+        $this->successMsg('تم تحديث الامتحان');
+
+        $this->reloadPage();
+    }
+
+    public function delete(Request $request)
+    {
+        $exam = Exam::where('id', $request->input('exam_id'))->first();
+
+        $exam_dir = public_path('uploads/exams/'.$exam->belongsToEducationalStage->slug.'/'.$exam->belongsToEducationalClass->slug.'/'.$exam->belongsToSubject->slug.'/'.$exam->slug);
+
+        file_exists($exam_dir) ? $this->deleteDir($exam_dir) : true;
+
+        $exam->delete();
+
+        $this->successMsg('تم مسح الامتحان');
+
+        $this->redierctTo('admin/exam/all-exams');
     }
 }

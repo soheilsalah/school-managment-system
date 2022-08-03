@@ -260,20 +260,25 @@ Route::post('/ajax/lab/delete', [LabController::class, 'delete'])->name('ajax.la
 
 
 /* Start Exam Pages */
-Route::get('/exams', [ExamController::class, 'index'])->name('exams');
+Route::get('/exam/all-exams', [ExamController::class, 'index'])->name('exams');
 Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
-Route::get('/exam/show/{slug}', [ExamController::class, 'show'])->name('exam.show');
-Route::get('/exam/preview/{slug}', [ExamController::class, 'preview'])->name('exam.preview');
+Route::get('/exam/{slug}/show', [ExamController::class, 'show'])->name('exam.show');
+Route::get('/exam/{slug}/preview', [ExamController::class, 'preview'])->name('exam.preview');
 
-// ajax call to view exams datatables
-Route::get('/datatable/exams', [ExamController::class, 'datatable'])->name('datatable.exams');
+// ajax call to view exam exams datatables
+Route::get('/datatable/exam/exams', [ExamController::class, 'datatable'])->name('datatable.exams');
 // ajax to display all educational classes when change educational stage
 Route::post('ajax/exam/display-all-educational-classes', [ExamController::class, 'displayEducationalClasses'])->name('ajax.exam.display-all-educational-classes');
 // ajax call to create new exam
 Route::post('/ajax/exam/create', [ExamController::class, 'createExams'])->name('ajax.exam.create');
 // ajax call to publish exam
 Route::post('/ajax/exam/publish', [ExamController::class, 'publish'])->name('ajax.exam.publish');
+// ajax call to update exam
+Route::post('/ajax/exam/update', [ExamController::class, 'update'])->name('ajax.exam.update');
+// ajax call to delete exam
+Route::post('/ajax/exam/delete', [ExamController::class, 'delete'])->name('ajax.exam.delete');
 /* End Exam Pages */
+
 
 
 /* Start Excercies Pages */
