@@ -202,9 +202,9 @@
                         <div class="form-group">
                         @if($student->image == null)
                             @if($student->gender == '1')
-                            <img src="{{ asset('images/avatars/male.png') }}" class="img-fluid" alt="{{ $student->name }}">
+                            <img src="{{ asset('app-assets/images/avatars/male.png') }}" class="img-fluid" alt="{{ $student->name }}">
                             @else
-                            <img src="{{ asset('images/avatars/female.png') }}" class="img-fluid" alt="{{ $student->name }}">
+                            <img src="{{ asset('app-assets/images/avatars/female.png') }}" class="img-fluid" alt="{{ $student->name }}">
                             @endif
                         @else
                             <img src="{{ asset('uploads/students/'.$student->slug.'/images/personal-image/'.$student->image) }}" class="img-fluid" alt="{{ $student->name }}">

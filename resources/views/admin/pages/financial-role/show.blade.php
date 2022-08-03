@@ -137,9 +137,9 @@
                         <div class="form-group">
                         @if($financialRole->image == null)
                             @if($financialRole->gender == '1')
-                            <img src="{{ asset('images/avatars/male.png') }}" class="img-fluid" alt="{{ $financialRole->name }}">
+                            <img src="{{ asset('app-assets/images/avatars/male.png') }}" class="img-fluid" alt="{{ $financialRole->name }}">
                             @else
-                            <img src="{{ asset('images/avatars/female.png') }}" class="img-fluid" alt="{{ $financialRole->name }}">
+                            <img src="{{ asset('app-assets/images/avatars/female.png') }}" class="img-fluid" alt="{{ $financialRole->name }}">
                             @endif
                         @else
                             <img src="{{ asset('uploads/financial-roles/'.$financialRole->slug.'/images/personal-image/'.$financialRole->image) }}" class="img-fluid" alt="{{ $financialRole->name }}">
